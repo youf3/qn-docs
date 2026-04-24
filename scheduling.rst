@@ -107,3 +107,13 @@ With the task definitions, it performs the following steps:
 4. If the root node’s state changes between *IN_SPEC* and *OUT_OF_SPEC*, the
    agent sends a monitoring message to the controller to report the
    status change.
+
+Controller-side request dispatch
+---------------------------------
+
+The controller distinguishes between experiment and calibration requests,
+routing each through a dedicated execution path with its own protocol and
+schema. Parameters are structured and typed before being forwarded to agents,
+ensuring consistent handling regardless of request type. Errors during
+allocation or result retrieval are reported with the identity of the
+specific agent involved.
