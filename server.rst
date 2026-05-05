@@ -21,11 +21,12 @@ The QUANT-NET Controller provides the centralized controller functions for the c
 Configuration File
 ------------------
 
-The controller makes use of an INI configuration file. The search path for the controller configuration file includes:
+The controller makes use of an INI configuration file. A path can be provided
+explicitly with the ``-c``/``--config`` CLI flag; if the file does not exist
+the controller exits immediately. Without ``-c``, the following paths are probed:
 
- * ``$QUANTNET_HOME/etc/quantnet.cfg``
- * ``/opt/quantnet/etc/quantnet.cfg``
- * ``$VIRTUAL_ENV/etc/quantnet.cfg``
+ * ``$QUANTNET_HOME/etc/quantnet.cfg`` (only when ``$QUANTNET_HOME`` is set)
+ * ``/opt/quantnet/etc/quantnet.cfg`` (always)
 
 Example: ::
 
@@ -91,16 +92,30 @@ The configuration file may contain multiple sections as documented below.
 ====
 
 .. confval:: host
-    
+
    :type: string
 
-   The message queue broker host.
+   The message queue (MQTT) broker host.
 
 .. confval:: port
 
    :type: string
 
-   The message queue broker port.
+   The message queue (MQTT) broker port.
+
+.. confval:: mongo_host
+
+   :type: string
+   :default: ``127.0.0.1``
+
+   The MongoDB host used by the message bus layer.
+
+.. confval:: mongo_port
+
+   :type: string
+   :default: ``27017``
+
+   The MongoDB port used by the message bus layer.
 
 [experiment_definition]
 =======================
@@ -155,6 +170,18 @@ The configuration file may contain multiple sections as documented below.
    :type: string
 
    The name of a Monitoring module to make active in the Controller.
+
+Topology API
+------------
+
+The controller's ``getInfo`` RPC with ``type="topology"`` supports an optional
+``full`` parameter:
+
+- ``full=False`` (default) — returns a lightweight summary with each node's
+  type and qubit/channel counts.
+- ``full=True`` — returns complete node definitions including full channel
+  data, plus aggregate counts of nodes, qubits, and channels across the
+  topology.
 
 Logging File
 ------------

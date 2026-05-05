@@ -51,7 +51,19 @@ The routing module generates the entanglement graph.
     Figure 2. Generated Engtanglement Graph
 
 
-The results from the default shortest path algorithm and the one with entanglement constraints ::    
+The results from the default shortest path algorithm and the one with entanglement constraints ::
 
 	Shortest Path hop by hop: ('UCB-Q', 'UCB-SWITCH', 'LBNL-SWITCH', 'LBNL-Q')
 	Entanglement Path hop by hop: ['UCB-Q', 'UCB-SWITCH', 'LBNL-SWITCH', 'LBNL-BSM', 'LBNL-SWITCH', 'LBNL-Q']
+
+Implementation Notes
+--------------------
+
+**MultiGraph support** — the routing module correctly handles
+topologies represented as either directed or undirected graphs, ensuring
+neighbor traversal works regardless of how the topology was constructed.
+
+**Quantum link recovery** — when topology serialization causes quantum link
+data to be lost during graph conversion, the routing module detects this and
+falls back to the original topology source, ensuring path computation is not
+degraded by serialization artifacts.
