@@ -129,7 +129,7 @@ The configuration file may contain multiple sections as documented below.
 [plugins]
 =========
 
-.. confval:: path
+.. confval:: plugins_path
 
    :type: string
 
@@ -138,7 +138,7 @@ The configuration file may contain multiple sections as documented below.
 [schemas]
 =========
 
-.. confval:: path
+.. confval:: schemas_path
 
    :type: string
 
@@ -147,7 +147,7 @@ The configuration file may contain multiple sections as documented below.
 [scheduling]
 ============
 
-.. confval:: name
+.. confval:: scheduling_name
 
    :type: string
 
@@ -156,7 +156,7 @@ The configuration file may contain multiple sections as documented below.
 [routing]
 =========
 
-.. confval:: name
+.. confval:: routing_name
 
    :type: string
 
@@ -165,7 +165,7 @@ The configuration file may contain multiple sections as documented below.
 [monitoring]
 ============
 
-.. confval:: name
+.. confval:: monitoring_name
 
    :type: string
 

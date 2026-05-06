@@ -64,6 +64,6 @@ Before you submit a pull request, check that it meets these guidelines:
 2. Code should adhere to PEP8 style guidelines.
 3. If the pull request fixes a bug, the description should include a
    description of the bug and how the fix addresses it.
-3. If the pull request adds functionality, the docs should be updated. Put
+4. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring and add a README.
 

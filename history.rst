@@ -5,6 +5,12 @@ Changelog
 1.1.0 (2026-04)
 ------------------
 
+qn-api (new)
+~~~~~~
+* Added northbound API server and web dashboard for experiment management and topology visualization.
+* API server provides REST endpoints for querying topology, managing experiments, and retrieving results.
+* :doc:`Northbound API </api>` documentation added to the docs.
+
 qn-mq
 ~~~~~
 
