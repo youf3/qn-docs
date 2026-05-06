@@ -168,3 +168,46 @@ We may then load and use the schema objects directly using ``quantnet_mq``:
     >>> req.serialize()
     '{"cmd": "myRequest", "agentId": "agent1", "payload": {"arg1": "Hello", "arg2": 99.99}, "agentID": "agent1", "command": "myRequest"}'
     >>>
+
+
+EventType Enum
+**************
+
+``quantnet_mq`` exports an ``EventType`` string enum that provides typed constants
+for all monitor event types used across the control plane:
+
+.. code-block:: python
+
+    from quantnet_mq import EventType
+
+    EventType.AGENT_STATE               # "agentState"
+    EventType.EXPERIMENT_RESULT         # "experimentResult"
+    EventType.AGENT_HEARTBEAT           # "agentHeartbeat"
+    EventType.AGENT_TASK_SCHEDULER_PHASE  # "agentTaskSchedulerPhase"
+    EventType.AGENT_TASK_SCHEDULER_TASK   # "agentTaskSchedulerTask"
+    EventType.AGENT_TASK_RESULT         # "agentTaskResult"
+
+These constants correspond directly to the ``eventType`` field of
+``MonitorEvent`` messages published to the ``monitor`` topic.
+See :doc:`Monitoring </monitoring>` for descriptions of each event type.
+
+Built-in Server RPC Schemas
+****************************
+
+qn-mq ships a set of built-in RPC message types used between agents and the
+controller. Notable additions:
+
+**MonitorTask / MonitorTaskResponse** — enables clients to query recorded
+agent task results from the controller's Monitor database via a ``getTasks``
+RPC call. The request may include an optional agent filter.
+See :doc:`Monitoring </monitoring>` for full details.
+
+Core Object Schemas
+*******************
+
+The core schema bundled with qn-mq provides common object types reusable in
+user-defined schemas. Recent additions:
+
+- ``Channel.length`` — a numeric property added to the ``Channel`` schema,
+  exposing quantum channel length. When the controller topology API is queried
+  in full mode, this field appears within each node's channel data.

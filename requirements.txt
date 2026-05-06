@@ -13,3 +13,4 @@ pyyaml
 quantnet-server
 quantnet-agent
 quantnet-mq
+quantnet-api

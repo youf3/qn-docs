@@ -27,6 +27,7 @@ Welcome to the documentation pages for the QUANT-NET Control Plane!
    Controller<server>
    Agent<agent>
    Message Bus<comms>
+   Northbound API<api>
 ..    Simulation<simulate>
 
 .. toctree::
