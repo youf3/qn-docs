@@ -108,7 +108,7 @@ Example (API-relevant sections only): ::
 
 
 [mq]
-====
+~~~~
 
 .. confval:: api_mq_host
 
@@ -171,7 +171,7 @@ Example (API-relevant sections only): ::
    Optional filesystem path used by the message bus layer.
 
 [schemas]
-=========
+~~~~~~~~~
 
 .. confval:: api_schema_path
 
@@ -182,7 +182,7 @@ Example (API-relevant sections only): ::
    messages.
 
 [main]
-======
+~~~~~~
 
 .. confval:: request_types
 
