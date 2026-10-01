@@ -72,3 +72,22 @@ Example Device Configuration::
     enabled = true
     type = Messaging
     driver = PassthroughDriver
+
+Link State Attributes
+---------------------
+
+The HAL exposes two additional attributes for the
+:doc:`Link Adjacency Protocol </link-adjacency>`:
+
+``hal.link_state_table``
+    A ``LinkStateTable`` instance containing the current state of all
+    neighbor links. Each entry is a ``LinkEntry`` dataclass with fields:
+    ``state``, ``last_hello_sent``, ``last_hello_received``,
+    ``hold_time``, ``channel_id``, ``neighbor_channel_id``,
+    ``switch_in_path``, ``switch_cid``, and ``history``.
+
+``hal.link_mgr``
+    The ``LinkAdjacencyManager`` instance that drives the Hello loop,
+    hold timer checks, and quantum probes. Provides methods:
+    ``connect(neighbor_cid)``, ``disconnect(neighbor_cid)``,
+    ``set_hello_interval(n)``, ``set_hold_time(n)``.

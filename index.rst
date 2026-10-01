@@ -28,6 +28,7 @@ Welcome to the documentation pages for the QUANT-NET Control Plane!
    Agent<agent>
    Message Bus<comms>
    Northbound API<api>
+   Config Builder<config-builder>
 ..    Simulation<simulate>
 
 .. toctree::
@@ -38,6 +39,13 @@ Welcome to the documentation pages for the QUANT-NET Control Plane!
    Scheduling<scheduling>
    Monitoring<monitoring>
    Protocols<protocols>
+
+.. toctree::
+   :caption: Agent Modules
+   :maxdepth: 2
+
+   Link Adjacency Protocol<link-adjacency>
+   Remote REPL<remote-repl>
 
 .. toctree::
    :caption: Internal API Reference

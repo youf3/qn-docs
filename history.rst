@@ -2,6 +2,50 @@
 Changelog
 =========
 
+1.2.0 (2026-10)
+------------------
+
+qn-config-builder (new)
+~~~~~~~~~~~~~~~~~~~~~~~
+* Added ``qn-config-builder`` package for generating QNCP deployment
+  configurations from high-level topology descriptions.
+* Supports three topology templates: ``full-mesh``, ``linear-direct``,
+  ``linear-switched``.
+* New distributed deployment mode (``deployment.mode: distributed``)
+  generates per-VM bundles for multi-host deployments.
+* CLI commands: ``generate``, ``init``, ``build``, ``wizard``, ``import``.
+* :doc:`Config Builder </config-builder>` documentation added.
+
+qn-mq
+~~~~~
+* Add ``link_adjacency.yaml`` schema with RPC types for the Link Adjacency
+  Protocol: ``linkHello``, ``linkProbe``, ``linkSwitchPortCheck``,
+  ``linkStateUpdate``.
+* Add ``linkControl`` / ``linkControlResponse`` schemas for remote REPL
+  control of agents over MQTT.
+
+qn-agent
+~~~~~~~~
+* Add :doc:`Link Adjacency Protocol </link-adjacency>`: IS-IS-inspired
+  neighbor discovery with four-state link state machine (DOWN → INIT →
+  CONTROL_UP → QUANTUM_UP).
+* New built-in components: ``LinkStateTable``, ``LinkAdjacencyManager``,
+  ``LinkInterpreter``.
+* Add interactive REPL with readline tab completion and curses live
+  monitor dashboard.
+* Add ``quantnet_repl`` standalone CLI tool for remote agent control
+  over MQTT. Multiple users can connect simultaneously.
+* Add ``--no-repl`` flag for headless Docker operation (default in
+  generated compose files).
+* Link state changes published as ``linkStateUpdate`` monitor events.
+
+qn-plugins
+~~~~~~~~~~
+* Add ``entanglement.yaml`` schema for continuous entanglement generation
+  interface (enable, disable, status, consume, capabilities).
+* Add ``entanglement_config`` support in DQC plugin for configuring
+  continuous vs. on-demand entanglement generation.
+
 1.1.0 (2026-04)
 ------------------
 

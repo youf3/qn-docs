@@ -88,3 +88,24 @@ Commands for Development
 	docker-compose logs -f controller
 
 
+Distributed Deployment
+----------------------
+
+For multi-host deployments (e.g., FABRIC testbed), use
+:doc:`qn-config-builder </config-builder>` to generate per-VM bundles:
+
+.. code-block:: bash
+
+    qn-config-builder generate full-mesh -n 2 \
+        --distributed --controller-ip <controller-ip> \
+        -o ./dist-demo/
+
+Upload each bundle to its target VM and run ``docker compose up -d``.
+Use ``quantnet_repl`` to connect to agents interactively:
+
+.. code-block:: bash
+
+    quantnet_repl -a QPU-1 --mq-host <controller-ip>
+
+See :doc:`Config Builder </config-builder>` and
+:doc:`Remote REPL </remote-repl>` for full details.

@@ -62,6 +62,11 @@ All valid event types are defined in the ``EventType`` enum exported by qn-mq
    * - ``agentTaskResult``
      - Result of a completed agent local task, including the experiment ID and
        result payload. Persisted to the Monitor DB and queryable via ``getTasks``.
+   * - ``linkStateUpdate``
+     - Link adjacency state transition (``DOWN``, ``INIT``, ``CONTROL_UP``,
+       ``QUANTUM_UP``). Published by the agent's
+       :doc:`Link Adjacency Protocol </link-adjacency>` when a link changes
+       state. Persisted to the Monitor DB.
 
 Agent Heartbeat Tracking
 ------------------------

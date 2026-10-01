@@ -31,6 +31,32 @@ topic as tasks complete. Each event includes:
   correlate results when queried via ``getTasks``.
 - ``value.result``: the task result payload (when present).
 
+Link Adjacency Protocol
+-----------------------
+
+The agent includes a built-in :doc:`Link Adjacency Protocol </link-adjacency>`
+that actively discovers neighbors, establishes bilateral link state, and
+reports state changes to the controller. Links progress through four states:
+``DOWN`` → ``INIT`` → ``CONTROL_UP`` → ``QUANTUM_UP``.
+
+See :doc:`Link Adjacency Protocol </link-adjacency>` for full details.
+
+Remote REPL
+-----------
+
+Agents can be controlled interactively using the ``quantnet_repl`` CLI tool,
+which connects to the agent over MQTT. Multiple users can connect to the same
+agent simultaneously.
+
+.. code-block:: bash
+
+    quantnet_repl -a QPU-1 --mq-host <controller-ip>
+
+When running in Docker, agents use ``--no-repl`` to run headless. The
+``quantnet_repl`` tool is the intended way to interact with deployed agents.
+
+See :doc:`Remote REPL </remote-repl>` for the full command reference.
+
 Configuration
 -------------
 
@@ -45,4 +71,17 @@ Without ``-c``, the config path depends on the environment:
 
 If no config file is found the agent continues with defaults and logs a
 warning. Message broker log output is suppressed to warning level by default.
+
+Link Adjacency Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``[link]`` section configures the link adjacency protocol:
+
+.. code-block:: ini
+
+    [link]
+    hello_interval = 10
+    hold_time = 30
+
+See :doc:`Link Adjacency Protocol </link-adjacency>` for details.
 

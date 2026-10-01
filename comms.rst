@@ -202,6 +202,41 @@ agent task results from the controller's Monitor database via a ``getTasks``
 RPC call. The request may include an optional agent filter.
 See :doc:`Monitoring </monitoring>` for full details.
 
+Link Adjacency RPC Schemas
+**************************
+
+qn-mq ships RPC schemas for the :doc:`Link Adjacency Protocol </link-adjacency>`:
+
+- ``linkHello`` / ``linkHelloResponse`` — periodic neighbor discovery
+- ``linkProbe`` / ``linkProbeResponse`` — quantum path verification
+- ``linkSwitchPortCheck`` / ``linkSwitchPortCheckResponse`` — switch port
+  routing verification
+- ``linkControl`` / ``linkControlResponse`` — remote REPL control commands
+  (see :doc:`Remote REPL </remote-repl>`)
+- ``linkStateUpdate`` — monitor event for link state transitions
+
+These are defined in ``quantnet_mq/schema/rpc/link_adjacency.yaml`` and
+auto-loaded at import time. Access them via:
+
+.. code-block:: python
+
+    from quantnet_mq.schema import models
+
+    hello = models.link_adjacency.linkHello(
+        cmd="link.hello",
+        agentId="QPU-1",
+        payload={
+            "src_cid": "QPU-1",
+            "dst_cid": "BSM-1_2",
+            "channel_id": "1",
+            "neighbor_channel_id": "4",
+            "seen_neighbors": ["BSM-1_2"],
+            "hello_interval": 10,
+            "hold_time": 30,
+            "timestamp": "2026-10-01T12:00:00",
+        },
+    )
+
 Core Object Schemas
 *******************
 
