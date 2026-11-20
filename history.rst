@@ -2,7 +2,7 @@
 Changelog
 =========
 
-1.2.0 (2026-10)
+1.2.0 (2026-11)
 ------------------
 
 qn-config-builder (new)
@@ -27,17 +27,47 @@ qn-mq
 qn-agent
 ~~~~~~~~
 * Add :doc:`Link Adjacency Protocol </link-adjacency>`: IS-IS-inspired
-  neighbor discovery with four-state link state machine (DOWN → INIT →
-  CONTROL_UP → QUANTUM_UP).
+  neighbor discovery with per-channel state machine (DOWN → INIT →
+  CONTROL_UP → QUANTUM_UP) keyed by ``<neighbor>:<channel>``.
+* Add :doc:`Link Emulation & Probing </link-emulation>`: virtual link
+  connection emulation (``VirtualLinkEndpoint``, ``parse_virtual_links``)
+  over IPv4/IPv6 UDP sockets with CRC32 deterministic port mapping and
+  ``peer_ips`` overlay addressing.
+* Add continuous classical ``link.hello`` RTT probing (capped at
+  ``CONTROL_UP``) and two-plane UDP/MQTT quantum probe emulation
+  (``DummyLightSrc`` + ``DummySignalMeasurement``) with ``IN_SPEC``
+  readiness gating and fault injection (``failrate``, ``efficiency``,
+  ``window``).
 * New built-in components: ``LinkStateTable``, ``LinkAdjacencyManager``,
   ``LinkInterpreter``.
-* Add interactive REPL with readline tab completion and curses live
-  monitor dashboard.
+* Add interactive REPL with readline tab completion, ``show probe`` /
+  ``probe`` / ``debug probe`` commands, and curses ``monitor`` /
+  ``monitor probe`` live dashboards.
 * Add ``quantnet_repl`` standalone CLI tool for remote agent control
   over MQTT. Multiple users can connect simultaneously.
 * Add ``--no-repl`` flag for headless Docker operation (default in
   generated compose files).
-* Link state changes published as ``linkStateUpdate`` monitor events.
+* Link state transitions and periodic probe snapshots published as
+  ``linkStateUpdate`` monitor events.
+
+qn-server
+~~~~~~~~~
+* Persist ``linkStateUpdate`` events into the ``LinkState`` MongoDB
+  collection, invalidate topology cache, and trigger router refresh on
+  link state changes.
+* Add ``QUANTNET_LINK_ADJACENCY=true`` topology filtering (quantum links
+  require ``QUANTUM_UP``; classical links require ``CONTROL_UP`` or
+  ``QUANTUM_UP``) and 20-second agent liveness enforcement marking links
+  incident to offline/stale agents as ``DOWN``.
+
+qn-api
+~~~~~~
+* Add ``GET /api/link_states`` endpoint returning per-channel link state
+  and probe telemetry from ``LinkState`` with stale-agent ``DOWN``
+  enforcement.
+* Update Web Dashboard with live link state on topology edges
+  (``/dashboard#topology``) and live ``/dashboard#links`` status table +
+  periodic probe stream over MQTT WebSocket with REST fallback polling.
 
 qn-plugins
 ~~~~~~~~~~

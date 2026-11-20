@@ -68,11 +68,37 @@ Refer to the ``qn-docker`` README for setup instructions.
 Web Portal (Dashboard)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The API server includes a web dashboard for interactive exploration of the network topology, agent calibration tasks, and experiment management. The dashboard is accessible at the root URL (``/``) when the server is running. 
+The API server includes a web dashboard for interactive exploration of the network topology, link and probe telemetry, agent calibration tasks, and experiment management. The dashboard is accessible at the root URL (``/``) when the server is running. 
 
 .. image:: _static/web-dashboard.png
   :width: 600
   :alt: Screenshot of the web dashboard
+
+Link & Probe Status Monitoring
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The dashboard provides real-time link connection and classical/quantum probe
+monitoring across two views:
+
+- **Topology View (``/dashboard#topology``)**: Distinguishes quantum and
+  classical links and reflects live link state across ``QUANTUM_UP``,
+  ``CONTROL_UP``, ``INIT``, and ``DOWN``. Edges tracked in
+  ``/api/link_states`` remain visible even when
+  ``QUANTNET_LINK_ADJACENCY=true`` filters ``DOWN``/``INIT`` edges out of
+  controller routing. Hovering over a quantum edge shows its state, probe
+  count, Time-of-Flight (ms), and virtual link ID.
+
+- **Links & Probes View (``/dashboard#links``)**: Updates via MQTT
+  WebSocket (``ws_host``:``ws_port`` on the ``monitor`` topic) with
+  5-second ``/api/link_states`` fallback polling:
+
+  - Per-link table showing link endpoints, channel type and ID, state,
+    probe status, ``TX / RX`` and ``OK / Fail`` counts, latency (``ToF``
+    and photon counts for quantum links; ``RTT`` for classical links),
+    virtual link ID, and age. Hovering over a row highlights the
+    corresponding edge on the topology graph.
+  - **Recent Periodic Probes** live stream displaying up to 40 recent
+    classical ``hello`` and quantum ``probe`` telemetry samples.
 
 
 Configuration File
@@ -216,6 +242,13 @@ All REST endpoints are grouped under the ``/api`` prefix via a dedicated
      - ``/api/topology``
      - Retrieve the network topology graph. Pass ``?full=true`` for complete
        node definitions including channel data.
+   * - GET
+     - ``/api/link_states``
+     - List all per-channel link state and probe telemetry documents from the
+       controller's ``LinkState`` collection (including ``state``,
+       ``is_quantum``, probe counts, ``last_probe_info``, and
+       ``probe_history``). Forces state to ``DOWN`` if either endpoint
+       node is stale (> 20 s without heartbeat).
    * - GET
      - ``/api/node``
      - List all nodes in the network.

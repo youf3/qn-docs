@@ -24,13 +24,20 @@ Device configurations are specified under the ``[devices]`` section in
 the configuration file and require the following parameters:
 
 * ``enabled`` : ``bool`` - Enables or disables the device
-* ``type`` : Specifies the device type, which must be one of the
-  following classes: ``LightSrc``, ``Filter``, ``LightMeasurement``,
-  ``SignalMeasurement``, ``AnalogController``, ``DigitalController``,
-  ``ExpFramework``
+* ``type`` : Specifies the device type (matching HAL base classes ``LightSrc``,
+  ``Filter``, ``LightMeasurement``, ``SignalMeasurement``,
+  ``AnalogController``, ``DigitalController``, ``ExpFramework``; typically
+  configured as ``Light_Source``, ``Filter``, ``Light_Measurement``,
+  ``Signal_Measurement``, ``Exp_Framework``, ``EGP``, or ``Messaging``)
 * ``driver`` : Name of the driver class to be initialized
 * Additional items are passed as dictionary parameters to the driver
   constructor when initialized
+
+When emulating link probing without physical optical hardware, configure
+``DummyLightSrc`` (under ``[[lightsource]]``) and ``DummySignalMeasurement``
+(under ``[[signalmeasurement]]``); see
+:doc:`Link Emulation & Probing </link-emulation>` for all virtual-link
+parameters.
 
 Example Device Configuration::
 
@@ -45,11 +52,17 @@ Example Device Configuration::
     [[lightsource]]
     enabled = true
     type = Light_Source
-    driver = overlay
-    device = /dev/ttyACM0
-    baud_rate = 9600
-    bsm_ip = 10.0.0.7
-    bsm_port = 55180    
+    driver = DummyLightSrc
+    ip = 127.0.0.1
+    base_port = 15000
+
+    [[signalmeasurement]]
+    enabled = true
+    type = Signal_Measurement
+    driver = DummySignalMeasurement
+    ip = 127.0.0.1
+    base_port = 15000
+    window = 2.0
 
     [[epc]]
     enabled = true
@@ -80,14 +93,19 @@ The HAL exposes two additional attributes for the
 :doc:`Link Adjacency Protocol </link-adjacency>`:
 
 ``hal.link_state_table``
-    A ``LinkStateTable`` instance containing the current state of all
-    neighbor links. Each entry is a ``LinkEntry`` dataclass with fields:
-    ``state``, ``last_hello_sent``, ``last_hello_received``,
-    ``hold_time``, ``channel_id``, ``neighbor_channel_id``,
-    ``switch_in_path``, ``switch_cid``, and ``history``.
+    A ``LinkStateTable`` instance storing per-channel link state keyed by
+    ``<neighbor_cid>:<channel_id>``. Each entry is a ``LinkEntry``
+    dataclass with fields: ``state``, ``last_hello_sent``,
+    ``last_hello_received``, ``hold_time``, ``neighbor_cid``,
+    ``channel_id``, ``neighbor_channel_id``, ``switch_in_path``,
+    ``switch_cid``, ``is_quantum``, ``direction``, ``neighbor_ready``,
+    ``history``, ``last_probe_sent``, ``last_probe_received``,
+    ``last_probe_status``, ``last_probe_id``, ``probe_tx_count``,
+    ``probe_rx_count``, ``probe_ok_count``, ``probe_fail_count``,
+    ``last_probe_info``, and ``probe_history``.
 
 ``hal.link_mgr``
     The ``LinkAdjacencyManager`` instance that drives the Hello loop,
-    hold timer checks, and quantum probes. Provides methods:
-    ``connect(neighbor_cid)``, ``disconnect(neighbor_cid)``,
+    hold timer checks, and classical/quantum probes. Provides methods:
+    ``connect(key)``, ``disconnect(key)``,
     ``set_hello_interval(n)``, ``set_hold_time(n)``.

@@ -183,6 +183,21 @@ The controller's ``getInfo`` RPC with ``type="topology"`` supports an optional
   data, plus aggregate counts of nodes, qubits, and channels across the
   topology.
 
+When the controller is started with ``QUANTNET_LINK_ADJACENCY=true``,
+``ResourceManager.build_topology()`` filters edges against the live
+``LinkState`` collection and node liveness state (20-second
+``AGENT_LIVENESS_TIMEOUT``):
+
+- **Quantum channels** (``quantum``, ``heraldedconnection``,
+  ``quantumconnection``) are included only when the outbound link state is
+  ``QUANTUM_UP``.
+- **Classical channels** are included when the outbound link state is
+  ``CONTROL_UP`` or ``QUANTUM_UP``.
+
+Links that have not converged (``DOWN`` or ``INIT``) are omitted from the
+controller's active routing topology while remaining visible in the
+:doc:`Northbound API </api>` ``/api/link_states`` endpoint and web dashboard.
+
 Logging File
 ------------
 A Python logging module ``logger.conf`` may be included in the QUANT-NET configuration path.

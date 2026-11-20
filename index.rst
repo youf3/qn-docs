@@ -45,6 +45,7 @@ Welcome to the documentation pages for the QUANT-NET Control Plane!
    :maxdepth: 2
 
    Link Adjacency Protocol<link-adjacency>
+   Link Emulation & Probing<link-emulation>
    Remote REPL<remote-repl>
 
 .. toctree::
